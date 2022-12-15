@@ -1,25 +1,44 @@
-const path = require("path");
+var HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+var path = require("path");
 
 module.exports = {
+  mode: "development",
+  entry: "./src/index.js",
   output: {
-    path: path.join(__dirname, "/dist"),
-    filename: "index.bundle.js",
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.js",
   },
-  devServer: {
-    port: 3010,
-    watchContentBase: true,
-  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./src/index.html",
+    }),
+    new MiniCssExtractPlugin(),
+  ],
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
         use: {
           loader: "babel-loader",
         },
       },
+      // {
+      //   test: /\.css$/i,
+      //   use: [MiniCssExtractPlugin.loader, "css-loader"],
+      // },
       {
-        test: /\.scss$/,
-        use: ["style-loader", "css-loader", "sass-loader"],
+        test: /\.s[ac]ss$/i,
+        use: [
+          "style-loader", //3. Inject styles into DOM
+          "css-loader", //2. Turns css into commonjs
+          "sass-loader", //1. Turns sass into css
+        ],
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
       },
     ],
   },
