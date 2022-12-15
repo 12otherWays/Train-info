@@ -1,18 +1,20 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import File from "./File.jsx";
+import { ContextProvider } from "./Context/Context.jsx";
+import Card from "./Components/Card.jsx";
 import "./App.scss";
-// import "./main.css";
 
 const App = () => {
   return (
-    <div>
-      <h1>Hello React 16,Webpack 4 & Babel 7!</h1>
-      <File />
-    </div>
+    <ContextProvider>
+      <div className="container px-auto py-auto">
+        <h1 className="text-secondary px-5 py-4">Projects </h1>
+        <Card />
+      </div>
+    </ContextProvider>
   );
 };
 
 const container = document.getElementById("root");
 const root = createRoot(container);
-root.render(<App tab="home" />);
+root.render(<App />);
