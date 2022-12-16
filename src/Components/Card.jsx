@@ -1,10 +1,29 @@
 import React from "react";
-import { useContext, useState } from "react";
-import Context from "../Context/Context.jsx";
+import { useState, useEffect } from "react";
 
 function Card() {
-  let { li } = useContext(Context);
-  console.log(li);
+  const [joke, setJoke] = useState("");
+  const [dogImage, setDogImage] = useState("");
+
+  // dad joke
+  function generateJoke() {
+    fetch("https://icanhazdadjoke.com/", {
+      headers: {
+        Accept: "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setJoke(data.joke));
+  }
+  // dog image
+  function showDogImage() {
+    fetch("https://dog.ceo/api/breeds/image/random")
+      .then((res) => res.json())
+      .then((data) => setDogImage(data.message));
+  }
+  useEffect(() => {
+    showDogImage();
+  }, []);
 
   return (
     <div className="card-columns">
@@ -23,17 +42,20 @@ function Card() {
       </div>
       <div className="card p-3">
         <blockquote className="blockquote mb-0 card-body">
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-            posuere erat a ante.
-          </p>
+          <p>{joke}</p>
           <footer className="blockquote-footer">
             <small className="text-muted">
-              <cite title="Source Title">Dad's JOKE</cite>
+              <cite title="Source Title">Don't Laugh Challenge</cite>
             </small>
             <br />
-            <button type="button" class="btn btn-outline-primary">
-              Get Dad Joke
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              onClick={() => {
+                generateJoke();
+              }}
+            >
+              Get Joke
             </button>
           </footer>
         </blockquote>
@@ -77,7 +99,14 @@ function Card() {
         </div>
       </div>
       <div className="card">
-        {/* <img className="card-img" src="..." alt="Card image"> */}
+        <img src={dogImage} alt="" />
+        <button
+          type="button"
+          class="btn btn-outline-warning"
+          onClick={showDogImage}
+        >
+          Other Dog Image
+        </button>
       </div>
       <div className="card p-3 text-right">
         <blockquote className="blockquote mb-0">
