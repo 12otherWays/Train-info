@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 function Card() {
   const [joke, setJoke] = useState("");
   const [dogImage, setDogImage] = useState("");
+  const [age, setAge] = useState("");
 
   // dad joke
   function generateJoke() {
@@ -24,6 +25,15 @@ function Card() {
   useEffect(() => {
     showDogImage();
   }, []);
+
+  // Predict age
+  function handleSubmit(event) {
+    event.preventDefault();
+    console.log(event.target.username.value);
+    fetch(`https://api.agify.io?name=${event.target.username.value}`)
+      .then((res) => res.json())
+      .then((data) => setAge(data.age));
+  }
 
   return (
     <div className="card-columns">
@@ -62,7 +72,7 @@ function Card() {
       </div>
       <div className="card">
         {/* <img className="card-img-top" src="..." alt="Card image cap"> */}
-        <div className="card-body">
+        {/* <div className="card-body">
           <h5 className="card-title">Card title</h5>
           <p className="card-text">
             This card has supporting text below as a natural lead-in to
@@ -71,10 +81,10 @@ function Card() {
           <p className="card-text">
             <small className="text-muted">Last updated 3 mins ago</small>
           </p>
-        </div>
+        </div> */}
       </div>
       <div className="card bg-primary text-white text-center p-3">
-        <blockquote className="blockquote mb-0">
+        {/* <blockquote className="blockquote mb-0">
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
             posuere erat.
@@ -84,17 +94,31 @@ function Card() {
               Someone famous in <cite title="Source Title">Source Title</cite>
             </small>
           </footer>
-        </blockquote>
+        </blockquote> */}
       </div>
       <div className="card text-center">
         <div className="card-body">
-          <h5 className="card-title">Card title</h5>
+          <h5 className="card-title">Predict your age of a name </h5>
           <p className="card-text">
-            This card has supporting text below as a natural lead-in to
-            additional content.
+            predicting the age of a person given their name.
           </p>
+          <form class="input-group mb-3" onSubmit={handleSubmit}>
+            <input
+              className="form-control"
+              type="text"
+              name="username"
+              placeholder="First Name"
+            />
+            <button class="btn btn-outline-secondary" type="submit">
+              Submit
+            </button>
+          </form>
           <p className="card-text">
-            <small className="text-muted">Last updated 3 mins ago</small>
+            <div class="mx-auto" style={{ width: "200px" }}>
+              <div class="jumbotron">
+                <h1 class="display-4">{age}</h1>
+              </div>
+            </div>
           </p>
         </div>
       </div>
@@ -105,34 +129,8 @@ function Card() {
           class="btn btn-outline-warning"
           onClick={showDogImage}
         >
-          Other Dog Image
+          Dog Image
         </button>
-      </div>
-      <div className="card p-3 text-right">
-        <blockquote className="blockquote mb-0">
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-            posuere erat a ante.
-          </p>
-          <footer className="blockquote-footer">
-            <small className="text-muted">
-              Someone famous in <cite title="Source Title">Source Title</cite>
-            </small>
-          </footer>
-        </blockquote>
-      </div>
-      <div className="card">
-        <div className="card-body">
-          <h5 className="card-title">Card title</h5>
-          <p className="card-text">
-            This is a wider card with supporting text below as a natural lead-in
-            to additional content. This card has even longer content than the
-            first to show that equal height action.
-          </p>
-          <p className="card-text">
-            <small className="text-muted">Last updated 3 mins ago</small>
-          </p>
-        </div>
       </div>
     </div>
   );
