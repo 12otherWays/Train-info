@@ -30,7 +30,6 @@ function Card() {
   // Predict age
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(event.target.username.value);
     fetch(`https://api.agify.io?name=${event.target.username.value}`)
       .then((res) => res.json())
       .then((data) => setAge(data.age));
@@ -47,6 +46,12 @@ function Card() {
     console.log(btncli);
   }
 
+  // train data
+  function trainSubmit(event) {
+    event.preventDefault();
+    console.log(event.target.trainInput.value);
+  }
+
   return (
     <>
       <div className="card-columns">
@@ -58,7 +63,11 @@ function Card() {
               Search for a train by name to get the train's departure and
               termination stations, as well as the train number and time taken. 
             </p>
-            <button type="button" class="btn btn-success" onClick={trainInfo}>
+            <button
+              type="button"
+              className="btn btn-success"
+              onClick={trainInfo}
+            >
               Click here
             </button>
           </div>
@@ -73,7 +82,7 @@ function Card() {
               <br />
               <button
                 type="button"
-                class="btn btn-outline-primary"
+                className="btn btn-outline-primary"
                 onClick={() => {
                   generateJoke();
                 }}
@@ -91,20 +100,20 @@ function Card() {
             <p className="card-text">
               predicting the age of a person given their name.
             </p>
-            <form class="input-group mb-3" onSubmit={handleSubmit}>
+            <form className="input-group mb-3" onSubmit={handleSubmit}>
               <input
                 className="form-control"
                 type="text"
                 name="username"
                 placeholder="First Name"
               />
-              <button class="btn btn-outline-secondary" type="submit">
+              <button className="btn btn-outline-secondary" type="submit">
                 Submit
               </button>
             </form>
-            <div class="mx-auto" style={{ width: "200px" }}>
-              <div class="jumbotron">
-                <h1 class="display-4">{age}</h1>
+            <div className="mx-auto" style={{ width: "200px" }}>
+              <div className="jumbotron">
+                <h1 className="display-4">{age}</h1>
               </div>
             </div>
           </div>
@@ -113,40 +122,36 @@ function Card() {
           <img src={dogImage} alt="" />
           <button
             type="button"
-            class="btn btn-outline-warning"
+            className="btn btn-outline-warning"
             onClick={showDogImage}
           >
             Dog Image
           </button>
         </div>
         {/* <div className="card">
-         
         </div> */}
       </div>
       <div className={btncli ? "mode" : "mode hidden"}>
         {/* <div className="mode hidden"> */}
-        <button class="close-modal" onClick={btnClick}>
+        <button className="close-modal" onClick={btnClick}>
           &times;
         </button>
         <h1>Train Info</h1>
-        <div class="input-group mb-3">
+        <form className="input-group mb-3" onSubmit={trainSubmit}>
           <input
             type="text"
             className="form-control"
             placeholder="Enter the train's number. "
+            name="trainInput"
           />
           <div className="input-group-append">
-            <button
-              className="btn btn-outline-secondary"
-              type="button"
-              id="button-addon2"
-            >
+            <button className="btn btn-outline-secondary" type="submit">
               Button
             </button>
           </div>
-        </div>
+        </form>
 
-        <table class="table table-bordered">
+        <table className="table table-bordered">
           <thead>
             <tr>
               <th scope="col">Name of train</th>
