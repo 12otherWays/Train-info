@@ -128,16 +128,58 @@ function Card() {
         <button class="close-modal" onClick={btnClick}>
           &times;
         </button>
-        <h1>I'm a modal window 😍</h1>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </p>
+        <h1>Train Info</h1>
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Enter the train's number. "
+          />
+          <div className="input-group-append">
+            <button
+              className="btn btn-outline-secondary"
+              type="button"
+              id="button-addon2"
+            >
+              Button
+            </button>
+          </div>
+        </div>
+
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Name of train</th>
+              <th scope="col">Departure station</th>
+              <th scope="col">Termination station</th>
+              <th scope="col">Days</th>
+              <th scope="col">Classes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td scope="row">1</td>
+              <td>Mark</td>
+              <td>Otto</td>
+              <td>@mdo</td>
+              <td>@mdo</td>
+            </tr>
+            <tr>
+              <td scope="row">2</td>
+              <td>Jacob</td>
+              <td>Thornton</td>
+              <td>@fat</td>
+              <td>@fat</td>
+            </tr>
+            <tr>
+              <td scope="row">3</td>
+              <td>Larry the Bird</td>
+              <td>Larry the Bird</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <div className={btncli ? "overlay" : "overlay hidden"}></div>
     </>
