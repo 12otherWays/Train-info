@@ -6,6 +6,15 @@ function Card() {
   const [dogImage, setDogImage] = useState("");
   const [age, setAge] = useState("");
   const [btncli, setBtncli] = useState(false);
+  const [trainData, setTrainData] = useState({
+    name: "",
+    train_from: "",
+    train_to: "",
+    arriveTime: "",
+    departTime: "",
+    days: "",
+    classes: "",
+  });
 
   // dad joke
   function generateJoke() {
@@ -15,41 +24,83 @@ function Card() {
       },
     })
       .then((res) => res.json())
-      .then((data) => setJoke(data.joke));
+      .then((data) => setJoke(data.joke))
+      .catch((err) => {
+        console.error(err);
+      });
   }
   // dog image
   function showDogImage() {
     fetch("https://dog.ceo/api/breeds/image/random")
       .then((res) => res.json())
-      .then((data) => setDogImage(data.message));
+      .then((data) => setDogImage(data.message))
+      .catch((err) => {
+        console.error(err);
+      });
   }
   useEffect(() => {
     showDogImage();
   }, []);
-
   // Predict age
   function handleSubmit(event) {
     event.preventDefault();
     fetch(`https://api.agify.io?name=${event.target.username.value}`)
       .then((res) => res.json())
-      .then((data) => setAge(data.age));
+      .then((data) => setAge(data.age))
+      .catch((err) => {
+        console.error(err);
+      });
   }
-
   // train info btn
   function trainInfo() {
     setBtncli(true);
   }
-
   //card cancel button
   function btnClick() {
     setBtncli(!btncli);
-    console.log(btncli);
   }
-
   // train data
   function trainSubmit(event) {
     event.preventDefault();
-    console.log(event.target.trainInput.value);
+
+    const options = {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "X-RapidAPI-Key": "af2f1f34bdmsha4dfd008ea1300bp1483c6jsne9b5537c8d5c",
+        "X-RapidAPI-Host": "trains.p.rapidapi.com",
+      },
+      body: `{"search":"${event.target.trainInput.value}"}`,
+    };
+
+    fetch("https://trains.p.rapidapi.com/", options)
+      .then((response) => response.json())
+      .then((response) => {
+        let { ...dataAPI } = response[0].data;
+
+        let textClasses = dataAPI.classes.toString();
+
+        let textDays = function () {
+          let trainDays = [];
+          for (const [key, value] of Object.entries(dataAPI.days)) {
+            if (value > 0) {
+              trainDays.push(key);
+            }
+          }
+          return trainDays.toString();
+        };
+
+        setTrainData({
+          name: response[0].name,
+          train_from: response[0].train_from,
+          train_to: response[0].train_to,
+          arriveTime: dataAPI.arriveTime,
+          departTime: dataAPI.departTime,
+          days: textDays(),
+          classes: textClasses,
+        });
+      })
+      .catch((err) => console.error(err));
   }
 
   return (
@@ -92,8 +143,6 @@ function Card() {
             </footer>
           </blockquote>
         </div>
-        {/* <div className="card bg-primary text-white text-center p-3">
-        </div> */}
         <div className="card text-center">
           <div className="card-body">
             <h5 className="card-title">Predict your age of a name </h5>
@@ -119,7 +168,7 @@ function Card() {
           </div>
         </div>
         <div className="card">
-          <img src={dogImage} alt="" />
+          <img src={dogImage} alt="" class=".card-img-top" />
           <button
             type="button"
             className="btn btn-outline-warning"
@@ -128,8 +177,6 @@ function Card() {
             Dog Image
           </button>
         </div>
-        {/* <div className="card">
-        </div> */}
       </div>
       <div className={btncli ? "mode" : "mode hidden"}>
         {/* <div className="mode hidden"> */}
@@ -156,32 +203,22 @@ function Card() {
             <tr>
               <th scope="col">Name of train</th>
               <th scope="col">Departure station</th>
+              <th scope="col">Departure time</th>
               <th scope="col">Termination station</th>
+              <th scope="col">Termination time</th>
               <th scope="col">Days</th>
               <th scope="col">Classes</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td scope="row">1</td>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>@mdo</td>
-            </tr>
-            <tr>
-              <td scope="row">2</td>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <td scope="row">3</td>
-              <td>Larry the Bird</td>
-              <td>Larry the Bird</td>
-              <td>@twitter</td>
-              <td>@twitter</td>
+              <td scope="row">{trainData.name}</td>
+              <td>{trainData.train_from}</td>
+              <td>{trainData.departTime}</td>
+              <td>{trainData.train_to}</td>
+              <td>{trainData.arriveTime}</td>
+              <td>{trainData.days}</td>
+              <td>{trainData.classes}</td>
             </tr>
           </tbody>
         </table>
